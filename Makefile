@@ -4,13 +4,12 @@ REGION = us-east-1
 PAYLOAD?='{"key1":"value1", "key2":"value2", "key3":"value3"}'
 ROLE=$(shell aws iam get-role --role-name $(PROJECT) --query 'Role.Arn' | tr -d '"')
 all: build
-$(FUNCTION).zip:
+build: clean
 	mkdir -p build
 	pip install -t build/ .
 	pip install -t build/ -r requirements.txt 
 	cp .env build/
 	cd build; zip -r ../$(FUNCTION).zip .; cd ..
-build: $(FUNCTION).zip
 clean:
 	rm -rf build/
 	rm *.zip
